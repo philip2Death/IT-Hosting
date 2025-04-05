@@ -1,0 +1,35 @@
+# 這是一個 Playwright 測試的 GitHub Actions 工作流範本。
+name: Playwright Tests # 工作流程的名稱，方便識別這個工作流的用途。
+on:
+  push: # 定義在代碼推送到倉庫的哪些分支時觸發工作流。
+    branches: [ main, master ] # 僅在 main 或 master 分支的推送時執行。
+  pull_request: # 定義在拉取請求創建或更新時觸發工作流。
+    branches: [ main, master ] # 僅在針對 main 或 master 分支的拉取請求上執行。
+
+jobs:
+  test: # 工作名稱，用於描述此工作流中的任務。
+    timeout-minutes: 60 # 為整個作業設置超時時間，避免資源長期占用，設置為60分鐘。
+    runs-on: ubuntu-latest # 設定運行環境，此處選擇最新版本的 Ubuntu 作為操作系統。
+
+    steps: # 定義作業中需要執行的各個步驟。
+    - uses: actions/checkout@v4 # 使用官方的 checkout Action，將代碼庫克隆到工作流運行環境中。
+
+    - uses: actions/setup-node@v4 # 配置 Node.js 環境。
+      with:
+        node-version: lts/* # 選擇安裝長期支持 (LTS) 的最新 Node.js 版本。
+
+    - name: Install dependencies # 安裝項目所需的依賴。
+      run: npm ci # 使用 `npm ci` 安裝，保證安裝過程穩定且快速，適用於 CI。
+
+    - name: Install Playwright Browsers # 安裝 Playwright 瀏覽器依賴和必要組件。
+      run: npx playwright install --with-deps # `--with-deps` 標誌會安裝所需的系統依賴。
+
+    - name: Run Playwright tests # 運行 Playwright 測試。
+      run: npx playwright test # 執行 Playwright 的測試腳本。
+
+    - uses: actions/upload-artifact@v4 # 上傳測試結果或報告為工件。
+      if: ${{ !cancelled() }} # 僅當工作流未被取消時上傳。
+      with:
+        name: playwright-report # 指定上傳的工件名稱。
+        path: playwright-report/ # 定義工件的目錄路徑。
+        retention-days: 30 # 保留工件 30 天。

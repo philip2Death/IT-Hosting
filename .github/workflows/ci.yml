@@ -1,0 +1,76 @@
+name: CI Pipeline  # 定義此 GitHub Actions 工作流程的名稱為 CI Pipeline
+
+on: [push, pull_request]  # 觸發條件：當有 push 或 pull request 時，自動啟動此工作流程
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}  # 根據矩陣選擇運行的操作系統
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]  # 測試 Windows 和 Ubuntu
+        browser: [chromium, firefox, webkit]   # 定義測試的瀏覽器矩陣
+        include:  # 為部分操作系統增加自定義參數
+          - os: windows-latest
+            playwright-flags: "--no-headless"  # 在 Windows 上禁用 Headless 模式
+          - os: ubuntu-latest
+            playwright-flags: ""  # 在 Ubuntu 上使用默認模式
+    steps:
+      - name: Install Playwright browsers  # 安裝 Playwright 所需的瀏覽器
+        run: npm init playwright@latest  # 使用 Playwright CLI 初始化項目並安裝瀏覽器
+
+      # 新增步驟：如果 package-lock.json 不存在，則生成它
+      - name: Ensure package-lock exists
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "package-lock.json not found, generating one..."
+            npm install --package-lock-only
+          else
+            echo "package-lock.json exists."
+          fi
+
+      - uses: actions/upload-artifact@v4  # 使用 GitHub Actions 提供的工件上傳插件
+        if: ${{ always() }}  # 確保即使前面的步驟失敗也會執行這一步
+        with:
+          name: playwright-report-${{ matrix.browser }}  # 工件名稱，包含瀏覽器的矩陣值
+          path: playwright-report/  # 工件存儲的路徑
+          retention-days: 30  # 工件保存 30 天
+
+      - name: Security audit  # 進行依賴項的安全審核
+        # 修改命令，使用 --omit=dev 替代 --production
+        run: npm audit --omit=dev --audit-level=high
+
+  test:
+    runs-on: ${{ matrix.os }}  # 根據矩陣選擇運行的操作系統
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]  # 測試 Windows 和 Ubuntu
+        browser: [chromium, firefox, webkit]   # 定義測試瀏覽器矩陣
+        node-version: [20.x]  # 使用 20.x 版 Node.js (LTS)
+    steps:
+      - name: Checkout code  # 檢出當前分支的代碼到虛擬機器中
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}  # 設置 Node.js 環境
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json  # 使用 package-lock.json 作為依賴版本緩存依據
+
+      - name: Install dependencies  # 安裝項目依賴
+        run: npm ci  # 使用 npm ci 安裝依賴，既快又保證環境一致
+
+      - name: Run Playwright tests  # 運行 Playwright 測試
+        run: npx playwright test --browser=${{ matrix.browser }}
+
+      - name: Run tests  # 運行單元測試
+        run: npm test  # 使用 package.json 定義的 test 腳本
+
+      - name: Build verification  # 驗證代碼是否能成功構建/打包
+        run: npm run build
+
+      - name: Run CI tests  # 運行專門為 CI/CD 設計的測試
+        run: npm run test:ci
+
+      - name: Audit dependencies  # 檢查依賴項中的安全性漏洞
+        run: npm audit --production  # 這裡假設 package-lock.json 在 test 階段已存在

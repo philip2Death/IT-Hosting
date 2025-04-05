@@ -1,0 +1,23 @@
+required_replacements:
+  files: 
+    - "package.json"
+    - "README.md"
+    - ".github/workflows/ci.yml"
+    - "public/manifest.json"  # 新增必要文件
+  patterns:
+    - "{{PROJECT_NAME}}"
+    - "{{CURRENT_YEAR}}"
+    - "{{PROJECT_SLUG}}"     # 新增 URL 友好格式變量
+versioned_dirs:
+  components: "v4"
+  plugins: "tailwind-2025"
+dependency_mapping:
+  next: "^15.0.0"
+  tailwindcss: "^4.0.17"
+post_replace_hooks:
+  - command: npm run lint:fix
+    description: "自動格式化代碼"
+  - command: git config init.defaultBranch main
+    condition: ${{ SYSTEM_ENV != 'windows' }}
+  - command: npm install --package-lock-only  # 強制更新鎖定文件
+  - command: git branch -m main              # 統一分支命名
