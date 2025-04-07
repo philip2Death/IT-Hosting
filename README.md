@@ -1,4 +1,4 @@
-[![Starter Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/philip2Death/Next.js15-Tailwind-v4-Starter/releases)![image](https://github.com/user-attachments/assets/8a74a8d0-6428-480f-ae3e-3acd69482616)
+# IT Hosting Platform
 [![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/philip2Death/Next.js15-Tailwind-v4-Starter/actions)![image](https://github.com/user-attachments/assets/19bd6857-ce51-4352-9f11-202182072974)
 
 
