@@ -1,5 +1,5 @@
 # IT Hosting Platform
-[![Starter Version](https://img.shields.io/github/v/release/philip2Death/IT-Hosting?label=version)](https://github.com/philip2Death/IT-Hosting/releases)
+[![Starter Version](https://img.shields.io/github/v/release/philip2Death/IT-Hosting?label=version&cacheSeconds=60)](https://github.com/philip2Death/IT-Hosting/releases)
 
 [![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/philip2Death/IT-Hosting/actions)
 
