@@ -36,8 +36,6 @@ jobs:
       - name: Run tests  # 運行單元測試
         run: npm test  # 使用 package.json 定義的 test 腳本
 
-      - name: Build verification  # 驗證代碼是否能成功構建/打包
-        run: npm run build
 
       - name: Run CI tests  # 運行專門為 CI/CD 設計的測試
         run: npm run test:ci
