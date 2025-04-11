@@ -3,43 +3,9 @@ name: CI Pipeline  # 定義此 GitHub Actions 工作流程的名稱為 CI Pipeli
 on: [push, pull_request]  # 觸發條件：當有 push 或 pull request 時，自動啟動此工作流程
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}  # 根據矩陣選擇運行的操作系統
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]  # 測試 Windows 和 Ubuntu
-        browser: [chromium, firefox, webkit]   # 定義測試的瀏覽器矩陣
-        include:  # 為部分操作系統增加自定義參數
-          - os: windows-latest
-            playwright-flags: "--no-headless"  # 在 Windows 上禁用 Headless 模式
-          - os: ubuntu-latest
-            playwright-flags: ""  # 在 Ubuntu 上使用默認模式
-    steps:
-      - name: Install Playwright browsers  # 安裝 Playwright 所需的瀏覽器
-        run: npm init playwright@latest  # 使用 Playwright CLI 初始化項目並安裝瀏覽器
-
-      # 新增步驟：如果 package-lock.json 不存在，則生成它
-      - name: Ensure package-lock exists
-        run: |
-          if [ ! -f package-lock.json ]; then
-            echo "package-lock.json not found, generating one..."
-            npm install --package-lock-only
-          else
-            echo "package-lock.json exists."
-          fi
-
-      - uses: actions/upload-artifact@v4  # 使用 GitHub Actions 提供的工件上傳插件
-        if: ${{ always() }}  # 確保即使前面的步驟失敗也會執行這一步
-        with:
-          name: playwright-report-${{ matrix.browser }}  # 工件名稱，包含瀏覽器的矩陣值
-          path: playwright-report/  # 工件存儲的路徑
-          retention-days: 30  # 工件保存 30 天
-
-      - name: Security audit  # 進行依賴項的安全審核
-        # 修改命令，使用 --omit=dev 替代 --production
-        run: npm audit --omit=dev --audit-level=high
-
+  
   test:
+    timeout-minutes: 60 # 為整個作業設置超時時間，避免資源長期占用，設置為60分鐘。
     runs-on: ${{ matrix.os }}  # 根據矩陣選擇運行的操作系統
     strategy:
       matrix:
