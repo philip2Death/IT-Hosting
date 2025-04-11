@@ -32,13 +32,15 @@ jobs:
       - name: Run Playwright tests  # 運行 Playwright 測試
         run: npx playwright test
 
-
-      - name: Run tests  # 運行單元測試
-        run: npm test  # 使用 package.json 定義的 test 腳本
-
-
       - name: Run CI tests  # 運行專門為 CI/CD 設計的測試
         run: npm run test:ci
 
       - name: Audit dependencies  # 檢查依賴項中的安全性漏洞
         run: npm audit --production  # 這裡假設 package-lock.json 在 test 階段已存在
+      
+      - uses: actions/upload-artifact@v4 # 上傳測試結果或報告為工件。
+        if: ${{ !cancelled() }} # 僅當工作流未被取消時上傳。
+        with:
+          name: playwright-report # 指定上傳的工件名稱。
+          path: playwright-report/ # 定義工件的目錄路徑。
+          retention-days: 30 # 保留工件 30 天。
