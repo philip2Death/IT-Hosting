@@ -1,9 +1,7 @@
 # IT Hosting Platform
-[![Starter Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/philip2Death/IT-Hosting/releases)
+[![Starter Version](https://img.shields.io/github/v/release/philip2Death/IT-Hosting?label=version)](https://github.com/philip2Death/IT-Hosting/releases)
 
 [![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/philip2Death/IT-Hosting/actions)
-
-
 
 A production-ready template with Next.js 15 App Router, Tailwind CSS v4, and Turbopack. Pre-configured for:
 ✅ 效能優先開發模式 (Turbopack)  
