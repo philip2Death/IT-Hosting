@@ -1,3 +1,4 @@
+//src/components/layout/Navbar.tsx
 import Link from 'next/link';
 
 export default function Navbar() {

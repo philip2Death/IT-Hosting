@@ -26,8 +26,12 @@ jobs:
       - name: Install dependencies  # 安裝項目依賴
         run: npm ci  # 使用 npm ci 安裝依賴，既快又保證環境一致
 
+      - name: Install Playwright Browsers # 安裝 Playwright 瀏覽器依賴和必要組件。
+        run: npx playwright install --with-deps # `--with-deps` 標誌會安裝所需的系統依賴。
+
       - name: Run Playwright tests  # 運行 Playwright 測試
         run: npx playwright test --browser=${{ matrix.browser }}
+
 
       - name: Run tests  # 運行單元測試
         run: npm test  # 使用 package.json 定義的 test 腳本
