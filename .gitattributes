@@ -1,6 +1,7 @@
+#æ–‡å­—æª”è½‰
 * text=auto eol=lf 
  
-# ©ú½T«ü©w±`¨£¥N½X©M°t¸m¤å¥ó¨Ï¥Î LF ¦æ§À 
+#ç‰¹å®šæ ¼å¼è½‰
 *.sh text eol=lf 
 *.yml text eol=lf 
 *.yaml text eol=lf 
@@ -14,7 +15,7 @@
 *.scss text eol=lf 
 *.html text eol=lf 
  
-# ³]¸m¤G¶i¨î¤å¥ó¡A¤£³B²z¦æ§À 
+
 *.png binary 
 *.jpg binary 
 *.jpeg binary 
@@ -25,10 +26,10 @@
 *.ttf binary 
 *.eot binary 
  
-# ³]¸m Git LFS¡]­Y¶µ¥Ø¥]§t¤j«¬¤å¥ó¡^ 
+
 *.pdf filter=lfs diff=lfs merge=lfs -text 
 *.mp4 filter=lfs diff=lfs merge=lfs -text 
 *.zip filter=lfs diff=lfs merge=lfs -text 
  
-# Âê©w¤å¥ó¤£¶i¦æ diff ©Î merge 
+
 *.lock -diff -merge

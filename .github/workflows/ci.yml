@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]  # 測試 Windows 和 Ubuntu
-        browser: [chromium, firefox, webkit]   # 定義測試瀏覽器矩陣
+        
         node-version: [20.x]  # 使用 20.x 版 Node.js (LTS)
     steps:
       - name: Checkout code  # 檢出當前分支的代碼到虛擬機器中
@@ -30,7 +30,7 @@ jobs:
         run: npx playwright install --with-deps # `--with-deps` 標誌會安裝所需的系統依賴。
 
       - name: Run Playwright tests  # 運行 Playwright 測試
-        run: npx playwright test --browser=${{ matrix.browser }}
+        run: npx playwright test
 
 
       - name: Run tests  # 運行單元測試
