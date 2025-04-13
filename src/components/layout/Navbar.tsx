@@ -1,3 +1,4 @@
+// src/components/layout/Navbar.tsx
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -42,6 +43,12 @@ export default function Navbar({ navItems }: NavbarProps) {
                 className="hover:text-blue-400 transition-colors duration-200"
               >
                 儀表板
+              </Link>
+              <Link
+                href="/dashboard/tickets" // 新增 Tickets 鏈接
+                className="hover:text-blue-400 transition-colors duration-200"
+              >
+                查看 Ticket
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: '/login' })}
@@ -115,6 +122,13 @@ export default function Navbar({ navItems }: NavbarProps) {
                 onClick={() => setIsOpen(false)}
               >
                 儀表板
+              </Link>
+              <Link
+                href="/dashboard/tickets" // 新增 Tickets 鏈接
+                className="hover:text-blue-400 transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                查看 Ticket
               </Link>
               <button
                 onClick={() => {

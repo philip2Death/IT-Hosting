@@ -1,12 +1,11 @@
-
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -19,6 +18,23 @@ model User {
   username  String   @unique
   email     String   @unique
   password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 與 SupportTicket 模型的關聯字段，名稱需匹配
+  supportTickets SupportTicket[] @relation("UserToSupportTicket")
+}
+
+model SupportTicket {
+  id      String  @id @default(uuid())
+  name    String
+  email   String
+  message String
+  userId  String? @map("user_id") // 關聯到 User，可選（未登錄用戶也可以提交）
+
+  // 與 User 模型的關聯字段，名稱需匹配
+  user User? @relation(fields: [userId], references: [id], name: "UserToSupportTicket")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
