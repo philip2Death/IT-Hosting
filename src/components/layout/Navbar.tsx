@@ -1,34 +1,78 @@
-//src/components/layout/Navbar.tsx
+'use client';
 import Link from 'next/link';
+import { useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 
-export default function Navbar() {
+interface NavItem {
+  name: string;
+  href: string;
+}
+
+interface NavbarProps {
+  navItems: NavItem[];
+}
+
+export default function Navbar({ navItems }: NavbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: session, status } = useSession();
+
   return (
-    <nav className="bg-[oklch(var(--nav-bg)/1)] text-[oklch(var(--nav-text))] p-4">
-      <div className="@container/navbar mx-auto flex items-center justify-between">
+    <nav className="bg-gray-800 text-white p-4">
+      <div className="container mx-auto flex items-center justify-between">
+        {/* 品牌標誌 */}
         <Link href="/" className="text-xl font-bold tracking-tighter">
           IT Hosting Pro
         </Link>
-        
-        <div className="hidden @[768px]:flex items-center gap-4">
-          <Link 
-            href="/login" 
-            className="hover:text-[oklch(80%_0.02_0)] transition-colors duration-200 ease-productive"
-          >
-            登入
-          </Link>
-          <Link
-            href="/register"
-            className="hover:text-[oklch(80%_0.02_0)] transition-colors duration-200 ease-productive"
-          >
-            註冊
-          </Link>
+
+        {/* 桌面端導航 */}
+        <div className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="hover:text-blue-400 transition-colors duration-200"
+            >
+              {item.name}
+            </Link>
+          ))}
+          {status === 'authenticated' ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="hover:text-blue-400 transition-colors duration-200"
+              >
+                儀表板
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: '/login' })}
+                className="hover:text-blue-400 transition-colors duration-200"
+              >
+                登出
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="hover:text-blue-400 transition-colors duration-200"
+              >
+                登入
+              </Link>
+              <Link
+                href="/register"
+                className="hover:text-blue-400 transition-colors duration-200"
+              >
+                註冊
+              </Link>
+            </>
+          )}
         </div>
 
-        <button 
-          className="@[768px]:hidden touch-manipulation active:scale-[0.98]
-                     focus-visible:ring-2 ring-offset-2 ring-[oklch(var(--nav-text)/0.5)]"
+        {/* 手機端漢堡選單按鈕 */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden touch-manipulation active:scale-[0.98] focus-visible:ring-2 ring-offset-2 ring-blue-500"
         >
-          {/* SVG保持不變 */}
           <svg
             className="w-6 h-6"
             fill="none"
@@ -44,6 +88,63 @@ export default function Navbar() {
             />
           </svg>
         </button>
+      </div>
+
+      {/* 手機端下拉菜單（添加動畫） */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="flex flex-col gap-4 mt-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="hover:text-blue-400 transition-colors duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+          {status === 'authenticated' ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="hover:text-blue-400 transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                儀表板
+              </Link>
+              <button
+                onClick={() => {
+                  signOut({ callbackUrl: '/login' });
+                  setIsOpen(false);
+                }}
+                className="text-left hover:text-blue-400 transition-colors duration-200"
+              >
+                登出
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="hover:text-blue-400 transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                登入
+              </Link>
+              <Link
+                href="/register"
+                className="hover:text-blue-400 transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                註冊
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
