@@ -1,53 +1,48 @@
 // src/app/api/register/route.ts
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { prisma } from "@/lib/prisma"; 
+import { prisma } from '@/lib/prisma';
+import { hashSync } from 'bcryptjs';
 
 export async function POST(request: Request) {
+  const { username, email, password } = await request.json();
+
+  if (!username || !email || !password) {
+    return NextResponse.json({ error: '缺少必填字段' }, { status: 400 });
+  }
+
   try {
-    const { username, email, password } = await request.json();
+    // 檢查用戶是否已存在
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { username }],
+      },
+    });
 
-    // 密碼哈希處理
-    const hashedPassword = await bcrypt.hash(password, 12);
+    if (existingUser) {
+      return NextResponse.json({ error: '電子郵件或用戶名已被註冊' }, { status: 409 });
+    }
 
-    // 創建用戶
-    const user = await prisma.user.create({
+    // 哈希密碼
+    const hashedPassword = hashSync(password, 12);
+
+    // 創建新用戶
+    const newUser = await prisma.user.create({
       data: {
         username,
         email,
-        password: hashedPassword
-      }
+        password: hashedPassword,
+      },
     });
 
-    return NextResponse.json({ 
-      success: true,
-      user: { id: user.id, email: user.email }
-    }, { status: 201 });
-
-  } catch (error: unknown) {
-    // Prisma 特定錯誤處理
-    if (error instanceof PrismaClientKnownRequestError) {
-      if (error.code === 'P2002') {
-        return NextResponse.json(
-          { error: '電子郵件或用戶名已被註冊' },
-          { status: 409 }
-        );
-      }
-    }
-
-    // 通用錯誤處理
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: '未知伺服器錯誤' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    console.error('[REGISTER_API_ERROR]', error);
+    return NextResponse.json({ error: '伺服器錯誤' }, { status: 500 });
   }
 }
