@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "postinstall": "prisma generate",
+    "lint": "next lint",
     "test": "playwright test --headed --timeout 120000",
     "test:ci": "playwright test  --retries=3 --timeout 120000 --workers 2"
   },
