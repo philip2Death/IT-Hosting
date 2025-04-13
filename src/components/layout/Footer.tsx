@@ -20,6 +20,9 @@ export default function Footer() {
           <Link href="/privacy" className="text-gray-300 hover:text-blue-400 transition-colors">
             隱私政策
           </Link>
+          <Link href="/faq" className="text-gray-300 hover:text-blue-400 transition-colors">
+            常見問題
+          </Link>
         </div>
       </div>
     </footer>

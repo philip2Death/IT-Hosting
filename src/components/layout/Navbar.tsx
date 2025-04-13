@@ -120,7 +120,8 @@ return (
           ))}
           {status === 'authenticated' ? (
             <>
-              
+              {/* 手機端也顯示用戶名稱 */}
+              <span className="text-gray-300">歡迎，{userName}</span>
               <Link
                 href="/dashboard"
                 className="hover:text-blue-400 transition-colors duration-200"
