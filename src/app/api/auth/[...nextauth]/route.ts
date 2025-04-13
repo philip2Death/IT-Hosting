@@ -6,9 +6,7 @@ import { validateEnvVars } from "@/lib/security/env-check";
 // 環境變量預檢核
 validateEnvVars([
   'NEXTAUTH_SECRET',
-  'NEXTAUTH_URL',
-  'GITHUB_CLIENT_ID',
-  'GITHUB_CLIENT_SECRET'
+  'NEXTAUTH_URL'
 ]);
 
 // 強化型配置擴展
@@ -28,11 +26,17 @@ const enhancedAuthOptions = {
     }
   },
   logger: {
-    error(code: string, metadata: Record<string, unknown>) {
-      console.error({ type: 'next-auth-error', code, metadata })
+    error(code: string, metadata: Error | { [key: string]: unknown; error: Error }) {
+      // 處理 metadata 為 Error 的情況
+      if (metadata instanceof Error) {
+        console.error({ type: 'next-auth-error', code, error: metadata.message, stack: metadata.stack });
+      } else {
+        // 處理 metadata 為對象的情況
+        console.error({ type: 'next-auth-error', code, metadata });
+      }
     },
     warn(code: string) {
-      console.warn({ type: 'next-auth-warning', code })
+      console.warn({ type: 'next-auth-warning', code });
     }
   }
 };
