@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession  } from 'next-auth';
+import { DefaultSession  } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { compareSync } from 'bcryptjs';
 import { prisma } from "@/lib/prisma";

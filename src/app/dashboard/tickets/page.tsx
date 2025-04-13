@@ -24,30 +24,6 @@ export default function TicketsPage() {
 
   // 預填用戶數據並獲取票證列表
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await fetch('/api/user');
-        if (!res.ok) {
-          throw new Error(`HTTP 錯誤！狀態碼: ${res.status}`);
-        }
-        const data = await res.json();
-        // 直接訪問 data，而不是 data.user
-        setFormData({
-          name: data.username || data.email?.split('@')[0] || '',
-          email: data.email || '',
-          message: '',
-        });
-      } catch (err) {
-        console.error('Fetch User Data Error:', err);
-        // 如果無法獲取用戶數據，保持表單空白
-        setFormData({
-          name: '',
-          email: '',
-          message: '',
-        });
-      }
-    };
-
     const fetchTickets = async () => {
       try {
         const res = await fetch('/api/support-ticket');
@@ -60,8 +36,13 @@ export default function TicketsPage() {
       }
     };
 
-    if (status === 'authenticated') {
-      fetchUserData();
+    if (status === 'authenticated' && session?.user) {
+      // 從 session 中獲取用戶信息，無需額外請求 /api/user
+      setFormData({
+        name: session.user.name || session.user.email?.split('@')[0] || '',
+        email: session.user.email || '',
+        message: '',
+      });
       fetchTickets();
     } else {
       // 未登錄用戶，清空表單
@@ -71,7 +52,7 @@ export default function TicketsPage() {
         message: '',
       });
     }
-  }, [status]);
+  }, [status, session]); // 添加 session 作為依賴項
 
   // 提交 Support Ticket
   const handleSubmit = async (e: React.FormEvent) => {

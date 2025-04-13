@@ -17,7 +17,10 @@ export default function Navbar({ navItems }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, status } = useSession();
 
-  return (
+// 從 session 中提取用戶名稱
+  const userName = session?.user?.name || session?.user?.email?.split('@')[0] || '用戶';
+
+return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
         {/* 品牌標誌 */}
@@ -25,7 +28,7 @@ export default function Navbar({ navItems }: NavbarProps) {
           IT Hosting Pro
         </Link>
 
-        {/* 桌面端導航 */}
+{/* 桌面端導航 */}
         <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
@@ -38,6 +41,7 @@ export default function Navbar({ navItems }: NavbarProps) {
           ))}
           {status === 'authenticated' ? (
             <>
+             
               <Link
                 href="/dashboard"
                 className="hover:text-blue-400 transition-colors duration-200"
@@ -45,7 +49,7 @@ export default function Navbar({ navItems }: NavbarProps) {
                 儀表板
               </Link>
               <Link
-                href="/dashboard/tickets" // 新增 Tickets 鏈接
+                href="/dashboard/tickets"
                 className="hover:text-blue-400 transition-colors duration-200"
               >
                 查看 Ticket
@@ -75,7 +79,7 @@ export default function Navbar({ navItems }: NavbarProps) {
           )}
         </div>
 
-        {/* 手機端漢堡選單按鈕 */}
+{/* 手機端漢堡選單按鈕 */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden touch-manipulation active:scale-[0.98] focus-visible:ring-2 ring-offset-2 ring-blue-500"
@@ -97,7 +101,7 @@ export default function Navbar({ navItems }: NavbarProps) {
         </button>
       </div>
 
-      {/* 手機端下拉菜單（添加動畫） */}
+{/* 手機端下拉菜單（添加動畫） */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
@@ -116,6 +120,8 @@ export default function Navbar({ navItems }: NavbarProps) {
           ))}
           {status === 'authenticated' ? (
             <>
+              {/* 手機端也顯示用戶名稱 */}
+              <span className="text-gray-300">歡迎，{userName}</span>
               <Link
                 href="/dashboard"
                 className="hover:text-blue-400 transition-colors duration-200"
@@ -124,7 +130,7 @@ export default function Navbar({ navItems }: NavbarProps) {
                 儀表板
               </Link>
               <Link
-                href="/dashboard/tickets" // 新增 Tickets 鏈接
+                href="/dashboard/tickets"
                 className="hover:text-blue-400 transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
               >

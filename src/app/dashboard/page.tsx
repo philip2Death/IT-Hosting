@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+    console.log('error',error)
 
   useEffect(() => {
     const fetchUserData = async () => {

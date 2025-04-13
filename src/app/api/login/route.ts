@@ -1,7 +1,6 @@
 // src/app/api/login/route.ts
-
+//目前沒用到,可作成學習用
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { prisma } from "@/lib/prisma"; 
 

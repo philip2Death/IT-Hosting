@@ -29,6 +29,7 @@ export default function LoginPage() {
       // 登入成功，手動重定向到儀表板
       router.push('/dashboard');
     } catch (err) {
+      console.error('登入錯誤:', err);
       setError('登入失敗，請檢查您的憑證');
     }
   };
