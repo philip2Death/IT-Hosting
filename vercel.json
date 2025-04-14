@@ -1,4 +1,4 @@
-// vercel.json 新增排除規則
+
 {
     "build": {
       "env": {
