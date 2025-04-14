@@ -110,7 +110,7 @@ export default function Dashboard() {
                   帳戶設定
                 </Link>
                 <Link
-                  href="/tickets"
+                  href="/dashboard/tickets"
                   className="block p-3 bg-gray-100 rounded-md hover:bg-blue-50 transition-colors"
                 >
                   查看Ticket
