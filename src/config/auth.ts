@@ -1,3 +1,4 @@
+// src/config/auth.ts
 import { DefaultSession  } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { compareSync } from 'bcryptjs';
