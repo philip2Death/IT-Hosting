@@ -1,27 +1,23 @@
+// vercel.json 新增排除規則
 {
     "build": {
       "env": {
         "DATABASE_URL": "@your_database_url_secret"
       }
     },
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node",
-        "config": {
-          "includeFiles": [
-            "prisma/**",
-            "node_modules/@prisma/client/**",
-            "node_modules/.prisma/**"
-          ]
-        }
+    "builds": [{
+      "config": {
+        "includeFiles": [
+          "prisma/schema.prisma",
+          "node_modules/.prisma/**",
+          "node_modules/@prisma/client/**"
+        ]
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/api"
+    }],
+    "routes": [{
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
       }
-    ]
+    }]
   }
   
