@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
     "start": "next start",
-    "postinstall": "prisma generate --schema=./prisma/schema.prisma",
+    "postinstall": "npm install --save-dev @types/react && prisma generate --schema=./prisma/schema.prisma",
     "lint": "next lint",
     "test": "playwright test --headed --timeout 120000",
     "test:ci": "playwright test  --retries=3 --timeout 120000 --workers 2"
