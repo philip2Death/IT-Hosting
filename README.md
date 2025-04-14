@@ -45,3 +45,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 A starter template for projects using Next.js 15 and Tailwind CSS v4. Includes pre-configured settings for faster development.
 
 Not to customize the import alias (`@/*` by default).
+"/* Debug deployment issues */" 
