@@ -1,3 +1,5 @@
+// src/app/products/cloud-managed-services/page.tsx
+export const dynamic = 'force-dynamic';
 export default function CloudManagedServicesPage() {
     return (
       <div className="py-12">

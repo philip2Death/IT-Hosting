@@ -1,3 +1,5 @@
+// src/app/products/web-hosting/page.tsx
+export const dynamic = 'force-dynamic';
 export default function WebHostingPage() {
     return (
       <div className="py-12">

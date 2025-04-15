@@ -1,0 +1,26 @@
+
+{
+    "build": {
+      "env": {
+        "DATABASE_URL": "@your_database_url_secret"
+      }
+    },
+    "builds": [{
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "includeFiles": [
+          "prisma/schema.prisma",
+          "node_modules/.prisma/**",
+          "node_modules/@prisma/client/**"
+        ]
+      }
+    }],
+    "routes": [{
+      "src": "/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      }
+    }]
+  }
+  

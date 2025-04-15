@@ -1,3 +1,5 @@
+// src/app/products/ai-model-installation/page.tsx
+export const dynamic = 'force-dynamic';
 export default function AIModelInstallationPage() {
     return (
       <div className="py-12">

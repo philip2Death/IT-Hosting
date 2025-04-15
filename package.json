@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
+    "vercel-build": "prisma generate --schema=./prisma/schema.prisma && next build",
     "start": "next start",
-    "postinstall": "npm install --save-dev @types/react && prisma generate --schema=./prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=./prisma/schema.prisma",
     "lint": "next lint",
     "test": "playwright test --headed --timeout 120000",
     "test:ci": "playwright test  --retries=3 --timeout 120000 --workers 2"
@@ -41,12 +42,14 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
-    "@types/react": "^19.1.0",
+    "@types/react": "^19.1.1",
     "@types/react-dom": "^19.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "glob": "^11.0.1",
     "prisma": "^6.6.0",
     "raw-loader": "^4.0.2",
+    "rimraf": "^6.0.1",
     "typescript": "^5"
   }
 }
