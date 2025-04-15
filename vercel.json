@@ -26,6 +26,5 @@
         "Cache-Control": "public, max-age=3600"
       }
     }
-  ],
-  "buildCommand": "npm run vercel-build"
+  ]
 }
