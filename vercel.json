@@ -1,13 +1,13 @@
-
 {
-    "build": {
-      "env": {
-        "DATABASE_URL": "@your_database_url_secret",
-        "NODE_ENV": "production",
-        "CI": "false"
-      }
-    },
-    "builds": [{
+  "build": {
+    "env": {
+      "DATABASE_URL": "@your_database_url_secret",
+      "NODE_ENV": "production",
+      "CI": "false"
+    }
+  },
+  "builds": [
+    {
       "src": "package.json",
       "use": "@vercel/next",
       "config": {
@@ -17,12 +17,15 @@
           "node_modules/@prisma/client/**"
         ]
       }
-    }],
-    "routes": [{
+    }
+  ],
+  "routes": [
+    {
       "src": "/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=3600"
       }
-    }]
-  }
-  
+    }
+  ],
+  "buildCommand": "npm run vercel-build"
+}
